@@ -23,18 +23,17 @@ if not utils.check_installation():
 
 	print '[*] Creating folders...'
 	for folder in config.INITIALISATION_CONSTANTS['FOLDERS']:
-		print '\t -%s' % (folder % config.__FULLNAME__)
-		if os.path.exists(folder % config.__FULLNAME__):
-			clean = utils.yes_no_question('[*] Some %s files seems to be already installed clean old installation and continue (yes/no) ?' % config.__NAME__)
+		print '\t [folder] %s' % folder
+		if os.path.exists(folder):
+			clean = utils.yes_no_question('[*] Some %s files seems to be already installed clean old installation and continue (yes/no) ? ' % config.__NAME__)
 			if clean == 'no': sys.exit(1)
-			else: shutil.rmtree(folder % config.__FULLNAME__)
-		os.mkdir(folder % config.__FULLNAME__)
+			else: shutil.rmtree(folder)
+		os.mkdir(folder)
 
-	print '[*] Set default configuration... (%s)' % (config.INITIALISATION_CONSTANTS['RULES'] % config.__FULLNAME__)
+	print '[*] Set default configuration... (%s)' % config.INITIALISATION_CONSTANTS['RULES']
 	cfg = ConfigParser.RawConfigParser()
 	for rule in config.INITIALISATION_CONSTANTS['DEFAULT_CONFIGURATION']:
-		if len(rule) == 0: cfg.add_section(rule[0])
+		if len(rule) == 2: cfg.add_section(rule[0])
 		else:
-			print '[%s] %s = %s' % rule
+			print '\t[%s] %s = %s' % (rule[0], rule[1], rule[2])
 			cfg.set(rule[0], rule[1], rule[2])
-	
